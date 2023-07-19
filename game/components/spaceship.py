@@ -27,8 +27,10 @@ class Spaceship(Sprite):
                 self.rect.right = 0
         elif user_input[pygame.K_UP] and self.rect.top > 300:
             self.rect.y -= 10
-        elif user_input[pygame.K_DOWN] and (self.rect.bottom < SCREEN_HEIGHT):
+        elif user_input[pygame.K_DOWN] and (self.rect.bottom < SCREEN_HEIGHT-10):
             self.rect.y += 10
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+    
