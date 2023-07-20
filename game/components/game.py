@@ -3,7 +3,7 @@ import pygame
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_manager import EnemyManager
-
+from game.components.bullets.bullet_manager import BulletManager
 
 class Game:
     def __init__(self):
@@ -17,7 +17,8 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.player = Spaceship()
-        self.enemies = EnemyManager()
+        self.enemy_manager = EnemyManager()
+        self.bullet_manager = BulletManager()
 
     def run(self):
         # Game loop: events - update - draw
@@ -37,15 +38,17 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
-        self.enemies.update()
+        self.enemy_manager.update(self)
+        self.bullet_manager.update(self)
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
-        self.enemies.draw(self.screen)
-#esto de aca se ve importante, no tocar (18723-23:24)
+        self.enemy_manager.draw(self.screen)
+        self.bullet_manager.draw(self.screen)
+        #esto se ve importante, no lo toques
         pygame.display.update()
         # pygame.display.flip()
 
@@ -57,4 +60,5 @@ class Game:
         if self.y_pos_bg >= SCREEN_HEIGHT:
             self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg - image_height))
             self.y_pos_bg = 0
+            
         self.y_pos_bg += self.game_speed
