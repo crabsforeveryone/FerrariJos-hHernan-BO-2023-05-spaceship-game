@@ -35,16 +35,12 @@ class Enemy(Sprite):
             self.rect.x -= self.speed_on_x
         elif self.direction == self.MOVES[1]:
             self.rect.x += self.speed_on_x
+            
 
         self.handle_direction()
 
         if self.rect.top > SCREEN_HEIGHT:
-            deletion()
-
-    def deletion(self):
-
-
-        
+ 
             enemies.remove(self)
 
     def draw(self, screen):

@@ -4,6 +4,7 @@ from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, F
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_manager import EnemyManager
 from game.components.bullets.bullet_manager import BulletManager
+from game.components.menu import Menu
 
 class Game:
     def __init__(self):
@@ -13,22 +14,32 @@ class Game:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.playing = False
+        self.running = False
         self.game_speed = 10
         self.x_pos_bg = 0
         self.y_pos_bg = 0
+        self.death_counter = 0
         self.player = Spaceship()
         self.enemy_manager = EnemyManager()
         self.bullet_manager = BulletManager()
+        self.menu = Menu(self.screen, "Presione cualquier boton para iniciar")
+
+    def execute(self):
+        self.running = True
+        while self.running and not self.playing:
+            self.show_menu()
+        pygame.display.quit()
+        pygame.quit()
 
     def run(self):
         # Game loop: events - update - draw
         self.playing = True
+        self.running = True
         while self.playing:
             self.events()
             self.update()
             self.draw()
-        pygame.display.quit()
-        pygame.quit()
+        
 
     def events(self):
         for event in pygame.event.get():
@@ -37,7 +48,7 @@ class Game:
 
     def update(self):
         user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
+        self.player.update(user_input, self)
         self.enemy_manager.update(self)
         self.bullet_manager.update(self)
 
@@ -45,9 +56,9 @@ class Game:
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
-        self.player.draw(self.screen)
         self.enemy_manager.draw(self.screen)
         self.bullet_manager.draw(self.screen)
+        self.player.draw(self.screen)
         #esto se ve importante, no lo toques
         pygame.display.update()
         # pygame.display.flip()
@@ -62,3 +73,32 @@ class Game:
             self.y_pos_bg = 0
             
         self.y_pos_bg += self.game_speed
+
+    def show_menu(self):
+        self.menu.draw(self.screen)
+        self.menu.update(self)
+
+        self.menu.reset_screen(self.screen)
+
+        if self.death_counter != 0:
+            self.menu.update_message(f'Numero de muertes: {self.death_counter}')
+    
+        icon = pygame.transform.scale(ICON), (80, 120)
+        self.screen.blit(icon, )
+
+        self.menu.draw(self.screen)
+        self.menu.update(self)
+
+            
+
+    def increase_death_counter(self):
+        self.death_counter += 1
+
+    def increase_score(self):
+        self.score += 1
+    
+    def draw_score(self):
+        font = pygame.font.Font(FONT_STYLE, 30)
+        text = font.render(f'Score: {self.score}', False, 'White')
+        text_rect = text.get_rect(topright = (SCREEN_WIDTH - 30, 30))
+        self.screen.blit(text, text_rect)
