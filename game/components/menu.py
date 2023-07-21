@@ -12,12 +12,14 @@ class Menu:
         self.text = self.font.render(message, False, 'Black')
         self.rect = self.text.get_rect(center = (self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT))
         self.score = self.font.render('0', False, 'Blue')
-        self.rect2 = self.score.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+10)))
+        self.score_height = self.SCREEN_HALF_HEIGHT + 50
+        self.rect2 = self.score.get_rect(center = (self.SCREEN_HALF_WIDTH, self.score_height))
         self.bigscore = self.font.render('0', False, 'Blue')
-        self.rect3 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+20)))
-
+        self.bigscore_height = self.SCREEN_HALF_HEIGHT + 80
+        self.rect3 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, self.bigscore_height))
         self.deaths = self.font.render('0', False, 'Blue')
-        self.rect4 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+30)))
+        self.deaths_height = self.SCREEN_HALF_HEIGHT + 110
+        self.rect4 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, self.deaths_height))
 
 
     def update(self, game):
@@ -45,16 +47,16 @@ class Menu:
 
     def update_message(self, message, score = '0',  bigscore = 0, deaths = 0):
         self.text = self.font.render(message, False, 'Red')
-        self.rect = self.text.get_rect(center = (self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT))
+        #self.rect = self.text.get_rect(center = (self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT))
 
-        self.score = self.font.render(str(score), False, 'Blue')
-        self.rect2 = self.score.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+10)))
+        self.score = self.font.render(score, False, 'Blue')
+        #self.rect2 = self.score.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+10)))
         
-        self.bigscore = self.font.render(str(bigscore), False, 'Green')
-        self.rect3 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+20)))
+        self.bigscore = self.font.render(bigscore, False, 'Green')
+        #self.rect3 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+20)))
 
-        self.deaths = self.font.render(str(deaths), False, 'Pink')
-        self.rect4 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+30)))
+        self.deaths = self.font.render(deaths, False, 'Pink')
+        #self.rect4 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+30)))
 
 
         

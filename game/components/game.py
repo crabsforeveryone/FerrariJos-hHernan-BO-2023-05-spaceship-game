@@ -86,7 +86,12 @@ class Game:
         self.menu.reset_screen(self.screen)
 
         if self.death_counter != 0:
-            self.menu.update_message('Game Over: Press any key to restart' ,self.score, self.bigscore, int((self.death_counter/ 2)))
+            self.first_line = f"Game Over: Press any key to restart"
+            self.second_line = f"Your score was: {self.score}"
+            self.third_line = f"Your highest score was: {self.bigscore}"
+            self.fourth_line = f"Number of deaths: {int(self.death_counter / 2)}"
+
+            self.menu.update_message(self.first_line, self.second_line, self.third_line, self.fourth_line)
         
    
         icon = pygame.transform.scale((ICON), (80, 120))
