@@ -11,13 +11,26 @@ class Menu:
         self.font = pygame.font.Font(FONT_STYLE, 30)
         self.text = self.font.render(message, False, 'Black')
         self.rect = self.text.get_rect(center = (self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT))
+        self.score = self.font.render('0', False, 'Blue')
+        self.rect2 = self.score.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+10)))
+        self.bigscore = self.font.render('0', False, 'Blue')
+        self.rect3 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+20)))
+
+        self.deaths = self.font.render('0', False, 'Blue')
+        self.rect4 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+30)))
+
 
     def update(self, game):
         pygame.display.update()
         self.handle_events(game)
 
-    def draw(self, screen):
+    def draw(self, screen, score = 0, bigscore = 0, deaths = 0):
         screen.blit(self.text, self.rect)
+        screen.blit(self.score, self.rect2)
+        screen.blit(self.bigscore, self.rect3)
+        screen.blit(self.deaths, self.rect4)
+
+
 
     def handle_events(self, game):
         for event in pygame.event.get():
@@ -30,6 +43,18 @@ class Menu:
     def reset_screen(self, screen):
         screen.fill('White')
 
-    def update_message(self, message):
+    def update_message(self, message, score = '0',  bigscore = 0, deaths = 0):
         self.text = self.font.render(message, False, 'Red')
         self.rect = self.text.get_rect(center = (self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT))
+
+        self.score = self.font.render(str(score), False, 'Blue')
+        self.rect2 = self.score.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+10)))
+        
+        self.bigscore = self.font.render(str(bigscore), False, 'Green')
+        self.rect3 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+20)))
+
+        self.deaths = self.font.render(str(deaths), False, 'Pink')
+        self.rect4 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, (self.SCREEN_HALF_HEIGHT+30)))
+
+
+        

@@ -23,6 +23,8 @@ class Game:
         self.enemy_manager = EnemyManager()
         self.bullet_manager = BulletManager()
         self.menu = Menu(self.screen, "Presione cualquier boton para iniciar")
+        self.bigscore = 0
+        self.score = 0
 
     def execute(self):
         self.running = True
@@ -32,6 +34,9 @@ class Game:
         pygame.quit()
 
     def run(self):
+        self.score = 0
+        self.bullet_manager.reset()
+        self.enemy_manager.reset()
         # Game loop: events - update - draw
         self.playing = True
         self.running = True
@@ -75,27 +80,29 @@ class Game:
         self.y_pos_bg += self.game_speed
 
     def show_menu(self):
-        self.menu.draw(self.screen)
+        self.menu.draw(self.screen, '0')
         self.menu.update(self)
 
         self.menu.reset_screen(self.screen)
 
         if self.death_counter != 0:
-            self.menu.update_message(f'Numero de muertes: {self.death_counter}')
-    
-        icon = pygame.transform.scale(ICON), (80, 120)
-        self.screen.blit(icon, )
+            self.menu.update_message('Game Over: Press any key to restart' ,self.score, self.bigscore, int((self.death_counter/ 2)))
+        
+   
+        icon = pygame.transform.scale((ICON), (80, 120))
+        self.screen.blit(icon, ((SCREEN_WIDTH / 2) - 40, (SCREEN_HEIGHT / 2) - 150))
 
         self.menu.draw(self.screen)
         self.menu.update(self)
 
-            
-
+           
     def increase_death_counter(self):
         self.death_counter += 1
 
     def increase_score(self):
         self.score += 1
+        if self.bigscore < self.score:
+            self.bigscore = self.score
     
     def draw_score(self):
         font = pygame.font.Font(FONT_STYLE, 30)
