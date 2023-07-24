@@ -14,30 +14,30 @@ class Menu:
         self.font = pygame.font.Font(FONT_STYLE, 30)
         self.text = self.font.render(message, False, 'Black')
         self.rect = self.text.get_rect(center = (self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT))
-        # self.score = self.font.render('0', False, 'Blue')
-        # self.score_height = self.SCREEN_HALF_HEIGHT + 50
-        # self.rect2 = self.score.get_rect(center = (self.SCREEN_HALF_WIDTH, self.score_height))
-        # self.bigscore = self.font.render('0', False, 'Blue')
-        # self.bigscore_height = self.SCREEN_HALF_HEIGHT + 80
-        # self.rect3 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, self.bigscore_height))
-        # self.deaths = self.font.render('0', False, 'Blue')
-        # self.deaths_height = self.SCREEN_HALF_HEIGHT + 110
-        # self.rect4 = self.bigscore.get_rect(center = (self.SCREEN_HALF_WIDTH, self.deaths_height))
-        #self.deaths = 0
+        self.mousex, self.mousey = (0,0)
+        self.menu_call = False
         self.helper = counter()
 
     def update(self, game):
         pygame.display.update()
+        #game.events()
         self.handle_events(game)
 
-    def draw(self, data, deaths):
+    def draw(self, screen, data = [], deaths=0):
         #cosito = 3
         #print("desde el menu")
-        if deaths < 1:
-            screen.blit(self.text, dest=(self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT))
-        else:
+        if deaths < 1 or self.menu_call:
+            self.helper.show({"Bienvenido al juego":'Welcome'}, self.screen, 100, 100, position='left')
+            self.helper.show({
+                "Jugar":'Jugar'
+            }, self.screen, 100, SCREEN_HEIGHT / 2, position='left', mouse_x=self.mousex, mouse_y=self.mousey)
+            self.helper.show({"Salir":"Salir"}, self.screen, 100, SCREEN_HEIGHT-100, position='left', mouse_x=self.mousex, mouse_y=self.mousey)
+   
+        elif deaths != 0 and not self.menu_call:
             self.helper.end(self.screen)
-            self.helper.show(data, self.screen, self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT+50)
+            self.helper.show(data, self.screen, self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT+50, position='center')
+            self.helper.show({'menu': "Menu"}, screen = self.screen, posx=SCREEN_WIDTH - 100, posy=SCREEN_HEIGHT-100, mouse_x=self.mousex, mouse_y=self.mousey)
+            
 
         #self.reset_screen(screen)
 
@@ -48,7 +48,34 @@ class Menu:
                 game.running = False
             if event.type == pygame.KEYDOWN:
                 game.run()
-
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.mousex, self.mousey = pygame.mouse.get_pos()
+            if self.helper.option == 0:
+                game.run()
+                self.helper.option = None
+            if self.helper.option == 'Salir':
+                game.playing = False
+                game.running = False
+            elif self.helper.option == 'Jugar':
+                game.run()
+                self.menu_call = False
+                self.helper.option = None
+            elif self.helper.option == 'Puntuaciones':
+                print(game.bigscore)
+                self.helper.option = None
+                self.menu_call = False
+            elif self.helper.option == 'Tienda':
+                print("Tienda")
+                self.menu_call = False
+                self.helper.option = None
+            elif self.helper.option == 'Menu':
+                self.menu_call = True
+                self.reset_screen(self.screen)
+                print("vayase al menu")
+                self.draw(self.screen)
+                pygame.display.update()
+                self.helper.option = None
+                
     def reset_screen(self, screen):
         screen.fill('White')
 

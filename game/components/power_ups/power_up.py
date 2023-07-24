@@ -6,12 +6,12 @@ from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SPACESHIP
 
 class PowerUp(Sprite):
     
-    def __init__(self, image, type, result_image = SPACESHIP):
+    def __init__(self, image, type, result_image = SPACESHIP, ypos=0):
         self.POS_ON_X = random.randint(120, SCREEN_WIDTH -120)
         self.result_image = result_image
         self.image = image
         self.image = pygame.transform.scale(self.image, (50, 50))
-        self.rect = self.image.get_rect(midtop = (self.POS_ON_X, 0))
+        self.rect = self.image.get_rect(midtop = (self.POS_ON_X, ypos))
         self.type = type
         self.start_time = 0
 

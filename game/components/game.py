@@ -29,6 +29,7 @@ class Game:
         self.score = 0
         self.power_up_manager = PowerUpManager()
         self.counter = counter()
+        
 
     def execute(self):
         self.running = True
@@ -55,6 +56,7 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
+                self.running = False
 
     def update(self):
         user_input = pygame.key.get_pressed()
@@ -90,18 +92,23 @@ class Game:
         self.y_pos_bg += self.game_speed
 
     def show_menu(self):
-        #self.menu.draw(self.screen, '0')
+        
         self.menu.update(self)
 
         self.menu.reset_screen(self.screen)
 
         if self.death_counter != 0:
             
-            self.menu.draw([
-                f"Your score was: {self.score}",
-                f"Your highest score was: {self.bigscore}",
-                f"Deaths: {int(self.death_counter / 2)}"
-            ], self.death_counter)
+            self.menu.draw(
+                screen=self.screen, 
+                data={
+                'Score':f"Your score was: {self.score}",
+                'Big Score':f"Your highest score was: {self.bigscore}",
+                'Deaths':f"Deaths: {int(self.death_counter / 2)}"
+            }, deaths=self.death_counter )
+        else:
+                self.menu.draw(self.screen)
+
         
    
         icon = pygame.transform.scale((ICON), (80, 120))
@@ -129,7 +136,7 @@ class Game:
         if self.player.has_power_up:
             time_to_show = int((self.player.power_up_time_up - pygame.time.get_ticks())/1000)
             if time_to_show >= 0:
-                self.counter.show(data = [f"remaining time of the power-up: {time_to_show} seconds"], screen=self.screen, posy=100, color='White' )
+                self.counter.show(data = {'message' : f"remaining time of the power-up: {time_to_show} seconds"}, screen=self.screen, posy=100, color='White' )
                 
                 # font = pygame.font.Font(FONT_STYLE, 30)
                 # self.text = font.render(f'Power: {self.player.power_up_type.capitalize()} Time left: {time_to_show} seconds', False, 'White')

@@ -12,9 +12,8 @@ class counter:
 		
 
 		self.font = pygame.font.Font(FONT_STYLE, 30)
-		#self.data = data
 		self.vertical = self.middle_y + 50
-
+		self.option = None
 		
 
 	def end(self, screen):
@@ -27,10 +26,21 @@ class counter:
 
 
 
-	def show(self, data, screen, posx = middle_x, posy = middle_y, color = 'Black'):
-		for i in range(len(data)):
-			self.message_to_show = self.font.render(str(data[i]), False, color)
-			self.rect_to_show = self.message_to_show.get_rect(center = (posx, posy))
-			screen.blit(self.message_to_show, self.rect_to_show)
-			posy = posy + 30
-		
+	def show(self, data, screen, posx = middle_x, posy = middle_y, color = 'Black', position='center', mouse_x=0, mouse_y=0):
+		for i in data.values():
+			if position == 'center':
+				self.message_to_show = self.font.render(str(i), False, color)
+				self.rect_to_show = self.message_to_show.get_rect(center = (posx, posy))
+				screen.blit(self.message_to_show, self.rect_to_show)
+				posy = posy + 30
+				if self.rect_to_show.collidepoint(mouse_x, mouse_y):
+					self.option = i
+			elif position == 'left':
+				self.message_to_show = self.font.render(str(i), False, color)
+				self.rect_to_show = self.message_to_show.get_rect(midleft = (posx, posy))
+				screen.blit(self.message_to_show, self.rect_to_show)
+				posy = posy + 30
+
+				if self.rect_to_show.collidepoint(mouse_x, mouse_y):
+					self.option = i
+	

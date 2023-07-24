@@ -5,6 +5,6 @@ from game.utils.constants import SHIELD, SHIELD_TYPE, SPACESHIP_SHIELD
 
 class Shield(PowerUp):
     def __init__(self):
-        super().__init__(SHIELD, SHIELD_TYPE, SPACESHIP_SHIELD)
+        super().__init__(SHIELD, SHIELD_TYPE, SPACESHIP_SHIELD, 0)
 
     
