@@ -6,6 +6,7 @@ from game.components.enemies.enemy_manager import EnemyManager
 from game.components.bullets.bullet_manager import BulletManager
 from game.components.menu import Menu
 from game.components.power_ups.power_up_manager import PowerUpManager
+from game.components.data_counter import counter
 
 class Game:
     def __init__(self):
@@ -27,6 +28,7 @@ class Game:
         self.bigscore = 0
         self.score = 0
         self.power_up_manager = PowerUpManager()
+        self.counter = counter()
 
     def execute(self):
         self.running = True
@@ -125,12 +127,14 @@ class Game:
 
     def draw_power_up_time(self):
         if self.player.has_power_up:
-            time_to_show = round((self.player.power_up_time_up - pygame.time.get_ticks())/1000, 2)
+            time_to_show = int((self.player.power_up_time_up - pygame.time.get_ticks())/1000)
             if time_to_show >= 0:
-                font = pygame.font.Font(FONT_STYLE, 30)
-                self.text = font.render(f'Power: {self.player.power_up_type.capitalize()} Time left: {time_to_show} seconds', False, 'White')
-                self.text_rect = self.text.get_rect(midtop = (SCREEN_WIDTH/2, 100))
-                self.screen.blit(self.text, self.text_rect)
+                self.counter.show(data = [f"remaining time of the power-up: {time_to_show} seconds"], screen=self.screen, posy=100, color='White' )
+                
+                # font = pygame.font.Font(FONT_STYLE, 30)
+                # self.text = font.render(f'Power: {self.player.power_up_type.capitalize()} Time left: {time_to_show} seconds', False, 'White')
+                # self.text_rect = self.text.get_rect(midtop = (SCREEN_WIDTH/2, 100))
+                # self.screen.blit(self.text, self.text_rect)
             else:
                 self.player.has_power_up = False
                 self.player.power_up_type = DEFAULT_TYPE

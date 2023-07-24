@@ -36,7 +36,8 @@ class Menu:
         if deaths < 1:
             screen.blit(self.text, dest=(self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT))
         else:
-            self.helper.show(data, self.screen)
+            self.helper.end(self.screen)
+            self.helper.show(data, self.screen, self.SCREEN_HALF_WIDTH, self.SCREEN_HALF_HEIGHT+50)
 
         #self.reset_screen(screen)
 
